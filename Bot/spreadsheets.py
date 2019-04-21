@@ -22,7 +22,9 @@ info = [
     ["'1-3 Star Ema List'!AT3:AW", "Zaregoto"]
 ]
 
-def updateDB():
+ema4_5 = "'4-5 Star Ema Skills'!A2:M87"
+
+def updateDB1_3():
     store = file.Storage('token.json')
     creds = store.get()
     if not creds or creds.invalid:
@@ -59,7 +61,7 @@ def updateDB():
     f.write("}")
     f.close()
 
-def loadDB():
+def loadEmaList1_3():
     f = open("emaList.json")
     jfile = json.load(f)
     db = dict()
@@ -69,6 +71,61 @@ def loadDB():
         db[ema[4]].append(ema)
     return db
 
-if __name__ == '__main__':
-    x = loadDB()
-    print(x["Hitagi Crab"])
+def updateDB4_5():
+    store = file.Storage('token.json')
+    creds = store.get()
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+        creds = tools.run_flow(flow, store)
+    service = build('sheets', 'v4', http=creds.authorize(Http()))
+
+    # Call the Sheets API
+    sheet = service.spreadsheets()
+
+    f = open("emaList4_5.json", "w")
+
+    f.write("{\n")
+    f.write('"data" : [\n')
+
+    result = sheet.values().get(spreadsheetId=spreadsheet,
+                                range=ema4_5).execute()
+    values = result.get('values', [])
+    l = len(values)
+
+    if not values:
+        print('No data found.')
+    else:
+        for i in range(0, l):
+            f.write('\t\t[')
+            for j in range (0, len(values[i])):
+                f.write(values[i][j])
+                if(j<len(values[i])-1):
+                    f.write(", ")
+            f.write("]")
+            if(i<l-1):
+                f.write(",")
+            f.write("\n")
+
+    f.write("\t]\n")
+    f.write("}")
+    f.close()
+
+    f.write("\t]\n")
+    f.write("}")
+    f.close()
+
+def loadEmaList4_5():
+    f = open("emaList.json")
+    jfile = json.load(f)
+    db = dict()
+    for arc in info:
+        db[arc[1]]=[]
+    for ema in jfile["data"]:
+        db[ema[4]].append(ema)
+    return db
+
+if __name__ == "__main__":
+    updateDB4_5()
+    f = open("emaList4_5.json")
+    j = json.load(f)
+
