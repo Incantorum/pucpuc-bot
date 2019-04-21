@@ -13,6 +13,7 @@ permited_ema_stars = ['1','2','3','4','5','ANY','Any','any']
 permited_ema_skill = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','ANY']
 
 emaList = dict()
+emaList4_5 = []
 
 @client.event
 async def on_message(message):
@@ -26,19 +27,18 @@ async def on_message(message):
         msg = 'Hello {0.author.mention}'.format(message)
         await channel.send(msg)
 
-    if message.content.startswith('!updateDB'):
+    elif message.content.startswith('!updateDB'):
         updateDB1_3()
         updateDB4_5()
         await channel.send("```Database Updated```")
 
-    if message.content.startswith('!searchEma'):
+    elif message.content.startswith('!searchEma'):
         emaList = loadEmaList1_3()
         msg = ""
         find = message.content.split(";")
         find[2] = find[2].upper()
         if ((len(find) != 3) or not(find[1] in permited_ema_stars) or not(find[2] in permited_ema_skill)):
-            embed_msg = generic_embed("Error", "Wrong format", "", server_default_thumbnail)
-            await channel.send("```Wrong Format```")
+            await channel.send(embed = error_embed())
         else:
             for arc in emaList:
                 for ema in emaList[arc]:
@@ -47,21 +47,38 @@ async def on_message(message):
             embed_msg = generic_embed("Ema Found", msg, "", server_default_thumbnail)
             await channel.send(embed = embed_msg)
     
-    if message.content.startswith('!searchEmaOf'):
-        emaList = loadEmaList4_5()
+    elif message.content.startswith('!searchCharEma'):
+        emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
-        
-        if (len(find) != 2):
-            await channel.send("")
-        for arc in emaList:
-            for ema in emaList[arc]:
-                if( find[1] in ema ):
-                    msg = msg + "\t%s - %s - %s\n" % (ema[0],ema[1],ema[2])
-        await channel.send("```Ema found```")
-        
 
-    if message.content.startswith('!quit'):
+        if (len(find) != 2):
+            await channel.send(embed = error_embed())
+        for ema in emaList4_5["data"]:
+            if( find[1] in ema[0] ):
+                msg = msg + "\t%s\n" % (ema[0])
+        embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
+        await channel.send(embed = embed_msg)
+    
+    elif message.content.startswith('!ema'):
+        emaList4_5 = loadEmaList4_5()
+        msg = ""
+        find = message.content.split()
+
+        if (len(find) != 2):
+            await channel.send(embed = error_embed())
+        try:
+            num = int(find[1])-1
+            if(num<len(emaList4_5["data"])):
+                ema = emaList4_5["data"][num]
+                embed_msg = generic_embed(ema[0], ema[2], ema[3], "")
+                await channel.send(embed = embed_msg)
+            else:
+                await channel.send(error_embed(error="Not in range"))
+        except ValueError:
+            await channel.send(embed = error_embed())
+
+    elif message.content.startswith('!quit'):
         exit()
 
 @client.event

@@ -22,7 +22,7 @@ info = [
     ["'1-3 Star Ema List'!AT3:AW", "Zaregoto"]
 ]
 
-ema4_5 = "'4-5 Star Ema Skills'!A2:M87"
+ema4_5 = "'4-5 Star Ema Skills'!B2:O87"
 
 def updateDB1_3():
     store = file.Storage('token.json')
@@ -54,7 +54,7 @@ def updateDB1_3():
 
                 f.write('\t\t[ "%s", "%s", "%s", "%s", "%s" ]' % (howto, values[i][1], values[i][2], values[i][3], inf[1]))
 
-                if (inf[1] != "Kubikiri Cycle Zaregoto" or i<l-1):
+                if (inf[1] != "Zaregoto" or i<l-1):
                     f.write(",\n")
 
     f.write("\t]\n")
@@ -85,7 +85,7 @@ def updateDB4_5():
     f = open("emaList4_5.json", "w")
 
     f.write("{\n")
-    f.write('"data" : [\n')
+    f.write('\t"data" : [\n')
 
     result = sheet.values().get(spreadsheetId=spreadsheet,
                                 range=ema4_5).execute()
@@ -96,12 +96,7 @@ def updateDB4_5():
         print('No data found.')
     else:
         for i in range(0, l):
-            f.write('\t\t[')
-            for j in range (0, len(values[i])):
-                f.write(values[i][j])
-                if(j<len(values[i])-1):
-                    f.write(", ")
-            f.write("]")
+            f.write('\t\t[ "%s", "%s", "%s", "%s"]' % (values[i][0], values[i][1], values[i][10], values[i][13]))
             if(i<l-1):
                 f.write(",")
             f.write("\n")
@@ -110,19 +105,10 @@ def updateDB4_5():
     f.write("}")
     f.close()
 
-    f.write("\t]\n")
-    f.write("}")
-    f.close()
-
 def loadEmaList4_5():
-    f = open("emaList.json")
+    f = open("emaList4_5.json")
     jfile = json.load(f)
-    db = dict()
-    for arc in info:
-        db[arc[1]]=[]
-    for ema in jfile["data"]:
-        db[ema[4]].append(ema)
-    return db
+    return jfile
 
 if __name__ == "__main__":
     updateDB4_5()
