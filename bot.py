@@ -47,7 +47,7 @@ async def on_message(message):
         await channel.send(embed = embed_msg)
     
     # $help
-    if message.content.startswith(commands[0][0]):
+    if message.content.startswith("$" + commands[0][0]):
         command_found = False
         cmd = message.content.split(" ")
         if (len(cmd) != 2):
@@ -64,7 +64,7 @@ async def on_message(message):
                 await channel.send(embed = error_embed(error = "Command not found"))
 
     # $searchEma
-    elif message.content.startswith(commands[1][0]):
+    elif message.content.startswith("$" + commands[1][0]):
         emaList = loadEmaList1_3()
         msg = ""
         find = message.content.split(" ")
@@ -90,7 +90,7 @@ async def on_message(message):
                 await channel.send(embed = embed_msg)
     
     # $searchCharEma
-    elif message.content.startswith(commands[2][0]):
+    elif message.content.startswith("$" + commands[2][0]):
         emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
@@ -104,7 +104,7 @@ async def on_message(message):
         await channel.send(embed = embed_msg)
     
     # $ema
-    elif message.content.startswith(commands[3][0]):
+    elif message.content.startswith("$" + commands[3][0]):
         emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
