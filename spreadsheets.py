@@ -61,16 +61,6 @@ def updateDB1_3():
     f.write("}")
     f.close()
 
-def loadEmaList1_3():
-    f = open("emaList.json")
-    jfile = json.load(f)
-    db = dict()
-    for arc in info:
-        db[arc[1]]=[]
-    for ema in jfile["data"]:
-        db[ema[4]].append(ema)
-    return db
-
 def updateDB4_5():
     store = file.Storage('token.json')
     creds = store.get()
@@ -104,11 +94,6 @@ def updateDB4_5():
     f.write("\t]\n")
     f.write("}")
     f.close()
-
-def loadEmaList4_5():
-    f = open("emaList4_5.json")
-    jfile = json.load(f)
-    return jfile
 
 if __name__ == "__main__":
     updateDB4_5()
