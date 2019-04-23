@@ -55,8 +55,8 @@ async def on_message(message):
         else:
             cmd = cmd[1]
             for i in range (0, len(commands)):
-                if (cmd == command[i][0]):
-                    msg = command[i][1]
+                if (cmd == commands[i][0]):
+                    msg = commands[i][1]
                     command_found = True
             if command_found == True:
                 await channel.send(embed = generic_embed("Command " + cmd, msg, "", server_default_thumbnail))
