@@ -37,7 +37,7 @@ async def on_message(message):
         msg = msg + '$searchCharEma\n'
         msg = msg + '$ema\n'
         embed_msg = generic_embed("Commands", msg, "", server_default_thumbnail)
-        await channel.send(msg)
+        await channel.send(embed = embed_msg)
 
     elif message.content.startswith('$searchEma'):
         emaList = loadEmaList1_3()
