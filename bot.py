@@ -32,8 +32,10 @@ async def on_message(message):
 
     channel = message.channel
 
-    if message.content.startswith('$hello'):
-        msg = 'Hello {0.author.mention}'.format(message)
+    if message.content.startswith('$commands'):
+        msg = '$searchEma\n'
+        msg = msg + '$searchCharEma\n'
+        msg = msg + '$ema\n'
         await channel.send(msg)
 
     elif message.content.startswith('$searchEma'):
@@ -87,9 +89,6 @@ async def on_message(message):
                 await channel.send(error_embed(error="Not in range"))
         except ValueError:
             await channel.send(embed = error_embed(error = "Wrong format, %s is not a number" % find[1]))
-
-    elif message.content.startswith('$quit'):
-        exit()
 
 @client.event
 async def on_ready():
