@@ -68,19 +68,19 @@ async def on_message(message):
         emaList = loadEmaList1_3()
         msg = ""
         find = message.content.split(" ")
-        find = find.split(";")
+        find = find[1].split(";")
         if (len(find) != 2):
             await channel.send(embed = error_embed())
         else:
-            if (not(find[1] in permited_ema_stars) or not(find[2] in permited_ema_skill)):
+            if (not(find[0] in permited_ema_stars) or not(find[1] in permited_ema_skill)):
                 await channel.send(embed = error_embed(error = "Wrong Parameters"))
             else:
-                find[2] = find[2].upper()
                 find[1] = find[1].upper()
+                find[0] = find[0].upper()
                 for arc in emaList:
                     for ema in emaList[arc]:
-                        print("{find[2]} - {find[2]}")
-                        if((find[2]==ema[1] or find[2]=="ANY") and (find[1]==ema[2] or find[1].upper=="ANY")):
+                        print("{find[1]} - {find[1]}")
+                        if((find[1]==ema[1] or find[1]=="ANY") and (find[0]==ema[2] or find[0].upper=="ANY")):
                             print("added")
                             msg = msg + "\t%s - %s - %s\n" % (ema[0],ema[1],ema[2])
                 if(len(msg) > 2048):
