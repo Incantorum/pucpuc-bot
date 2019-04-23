@@ -1,11 +1,20 @@
 # Work with Python 3.6
 import discord
-from spreadsheets import *
+import json
+import os
 from common_embed import *
 
-TOKEN = 'NTIwNjQ3OTI2MjA1MzgyNjY2.XLtzkA.vQ88_HoWqXWrOKHT1QyMyg_UybI'
-
 client = discord.Client()
+
+info = [
+    ["'1-3 Star Ema List'!D3:G", "Hitagi Crab"],
+    ["'1-3 Star Ema List'!J3:M", "Mayoi Snail"],
+    ["'1-3 Star Ema List'!P3:S", "Suruga Monkey"],
+    ["'1-3 Star Ema List'!V3:Y", "Nadeko Snake"],
+    ["'1-3 Star Ema List'!AB3:AE", "Tsubasa Cat"],
+    ["'1-3 Star Ema List'!AH3:AK", "Karen Bee"],
+    ["'1-3 Star Ema List'!AT3:AW", "Zaregoto"]
+]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
 
@@ -26,11 +35,6 @@ async def on_message(message):
     if message.content.startswith('$hello'):
         msg = 'Hello {0.author.mention}'.format(message)
         await channel.send(msg)
-
-    elif message.content.startswith('$updateDB'):
-        updateDB1_3()
-        updateDB4_5()
-        await channel.send("```Database Updated```")
 
     elif message.content.startswith('$searchEma'):
         emaList = loadEmaList1_3()
@@ -94,4 +98,19 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
-client.run(TOKEN)
+def loadEmaList4_5():
+    f = open("emaList4_5.json")
+    jfile = json.load(f)
+    return jfile
+
+def loadEmaList1_3():
+    f = open("emaList.json")
+    jfile = json.load(f)
+    db = dict()
+    for arc in info:
+        db[arc[1]]=[]
+    for ema in jfile["data"]:
+        db[ema[4]].append(ema)
+    return db
+
+client.run(os.getenv('TOKEN'))
