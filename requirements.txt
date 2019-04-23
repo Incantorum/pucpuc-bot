@@ -1,5 +1,5 @@
-discord
-numpy
-google-api-python-client 
-google-auth-httplib2 
-google-auth-oauthlib
+discord.py
+numpy.py
+google-api-python-client.py
+google-auth-httplib2.py
+google-auth-oauthlib.py
