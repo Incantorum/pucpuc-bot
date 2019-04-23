@@ -42,7 +42,7 @@ async def on_message(message):
     if message.content.startswith('$commands'):
         msg = ''
         for command in commands:
-            msg = '$' + command[0] + "\n"
+            msg = msg  + '$' + command[0] + "\n"
         embed_msg = generic_embed("Commands", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
     
