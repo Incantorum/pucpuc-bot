@@ -23,31 +23,37 @@ async def on_message(message):
 
     channel = message.channel
 
-    if message.content.startswith('!hello'):
+    if message.content.startswith('$hello'):
         msg = 'Hello {0.author.mention}'.format(message)
         await channel.send(msg)
 
-    elif message.content.startswith('!updateDB'):
+    elif message.content.startswith('$updateDB'):
         updateDB1_3()
         updateDB4_5()
         await channel.send("```Database Updated```")
 
-    elif message.content.startswith('!searchEma'):
+    elif message.content.startswith('$searchEma'):
         emaList = loadEmaList1_3()
         msg = ""
         find = message.content.split(";")
         find[2] = find[2].upper()
+        find[1] = find[1].upper()
         if ((len(find) != 3) or not(find[1] in permited_ema_stars) or not(find[2] in permited_ema_skill)):
             await channel.send(embed = error_embed())
         else:
             for arc in emaList:
                 for ema in emaList[arc]:
-                    if((find[2]==ema[1]) and (find[1]==ema[2])):
+                    print("{find[2]} - {find[2]}")
+                    if((find[2]==ema[1] or find[2]=="ANY") and (find[1]==ema[2] or find[1].upper=="ANY")):
+                        print("added")
                         msg = msg + "\t%s - %s - %s\n" % (ema[0],ema[1],ema[2])
-            embed_msg = generic_embed("Ema Found", msg, "", server_default_thumbnail)
+            if(len(msg) > 2048):
+                embed_msg = error_embed(error="Result too big")
+            else:
+                embed_msg = generic_embed("Ema Found", msg, "", server_default_thumbnail)
             await channel.send(embed = embed_msg)
     
-    elif message.content.startswith('!searchCharEma'):
+    elif message.content.startswith('$searchCharEma'):
         emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
@@ -60,7 +66,7 @@ async def on_message(message):
         embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
     
-    elif message.content.startswith('!ema'):
+    elif message.content.startswith('$ema'):
         emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
@@ -76,9 +82,9 @@ async def on_message(message):
             else:
                 await channel.send(error_embed(error="Not in range"))
         except ValueError:
-            await channel.send(embed = error_embed())
+            await channel.send(embed = error_embed(error = "Wrong format, %s is not a number" % find[1]))
 
-    elif message.content.startswith('!quit'):
+    elif message.content.startswith('$quit'):
         exit()
 
 @client.event
