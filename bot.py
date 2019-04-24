@@ -26,7 +26,7 @@ commands = [
     ["searchNamePuc", "Search pucs by name\n\tExample: $searchPuc Araragi"],
     ["puc", "Display info about a puc by using his number\n\tExample: $puc 2"],
     ["searchSkillEma", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma "Size Up"'],
-    ["searchSkillPuc", 'Search pucs by skill\t\nExample: $searchSkillPuc "Size Up"']
+    ["searchSkillPuc", 'Search pucs by skill\t\nExample: $searchSkillPuc "Size Up";"Board Clear"']
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
@@ -186,6 +186,33 @@ async def on_message(message):
             except ValueError:
                 embed_msg = error_embed(error="%s is not a number" % (find[2]))
         await channel.send(embed=embed_msg)
+    
+    # $searchSkillEma
+    elif message.content.startswith(commandF(7)):
+        emaList4_5 = loadEmaList4_5()
+        msg = ""
+        find = message.content.split()
+        if (len(find) != 2):
+            await channel.send(embed = error_embed())
+        for ema in emaList4_5["data"]:
+            if( find[1] in ema[2] ):
+                msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
+        embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
+        await channel.send(embed = embed_msg)
+    
+    # $searchSkillPuc
+    elif message.content.startswith(commandF(8)):
+        pucs = loadPucs()
+        msg = ""
+        find = message.content.split(" ")
+        if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
+        else:
+            for puc in pucs['data']:
+                if find[1] in puc[2]: 
+                    msg = msg + "\n" + str(puc[0]) + " " + puc[1]
+            embed_msg = generic_embed("Pucs found", msg, "", server_default_thumbnail)
+        await channel.send(embed=embed_msg)
+
 
 @client.event
 async def on_ready():
