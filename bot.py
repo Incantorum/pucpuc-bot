@@ -42,7 +42,7 @@ async def on_message(message):
 
     channel = message.channel
 
-    if message.content.startswith('$commands '):
+    if message.content.startswith('$commands'):
         msg = ''
         for command in commands:
             msg = msg  + '$' + command[0] + "\n"
@@ -125,7 +125,7 @@ async def on_message(message):
         except ValueError:
             await channel.send(embed = error_embed(error = "Wrong format, %s is not a number" % find[1]))
     
-    elif message.content.startswith(commandF(4)):
+    elif message.content.startswith(commandF(4, space = False)):
         pucs = loadPucs()
         ema = loadEmaList4_5()
         num_puc = random.randint(0,len(pucs['data']))
@@ -171,7 +171,8 @@ def loadPucs():
     jfile = json.load(f)
     return jfile
 
-def commandF(num):
-    return "$" + commands[num][0] + " "
+def commandF(num, space=True):
+    if space == True : return "$" + commands[num][0] + " "
+    else : return "$" + commands[num][0]
 
 client.run(os.getenv('TOKEN'))
