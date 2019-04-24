@@ -173,7 +173,7 @@ async def on_message(message):
                 else:
                     puc = pucs['data'][num]
                     field = [
-                        ["Viability:", puc[3] + "/"+ puc[4], False]
+                        ["Viability:", puc[3] + "/"+ puc[4], False],
                         ["Rank 1", puc[5], True],
                         ["Rank 2", puc[6], True],
                         ["Rank 3", puc[7], True],
