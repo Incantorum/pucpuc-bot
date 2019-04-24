@@ -122,7 +122,15 @@ def updatePuc():
         print('No data found.')
     else:
         for i in range(0, l):
-            f.write('\t\t[ "%s", "%s"]' % (values[i][0], values[i][len(values[i])-1]))            
+            skill = values[i][1].split("\n")
+            skill = " ".join(skill)
+            f.write('\t\t[ ')
+            f.write('%d, ' % (i+1))
+            for j in range (0, len(values[i])):
+                if(j==1): f.write('"' + skill + '"')
+                else: f.write('"%s"' % values[i][j])
+                if(j<len(values[i])-1): f.write(", ")
+            f.write("]")
             if(i<l-1):
                 f.write(",")
             f.write("\n")

@@ -20,14 +20,18 @@ info = [
 commands = [
     ["help", "Info about a command.\n\tExample: $help ema"],
     ["searchEma", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"],
-    ["searchCharEma", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
+    ["searchNameEma", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
     ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10"],
-    ["setup", "Generates a random setup"]
+    ["setup", "Generates a random setup"],
+    ["searchNamePuc", "Search pucs by name\n\tExample: $searchPuc Araragi"],
+    ["puc", "Display info about a puc by using his number\n\tExample: $puc 2"],
+    ["searchSkillEma", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma "Size Up"'],
+    ["searchSkillPuc", 'Search pucs by skill\t\nExample: $searchSkillPuc "Size Up"']
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
 
-permited_ema_stars = ['1','2','3','4','5','ANY','Any','any']
+permited_ema_stars = ['1','2','3','4','5','ANY']
 permited_ema_skill = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','ANY']
 
 emaList = dict()
@@ -36,10 +40,12 @@ pucs = []
 
 @client.event
 async def on_message(message):
+
     # we do not want the bot to reply to itself
     if message.author == client.user:
         return
 
+    # gets the channel where the message was writen
     channel = message.channel
 
     if message.content.startswith('$commands'):
@@ -92,12 +98,11 @@ async def on_message(message):
                     embed_msg = generic_embed("Ema Found", msg, "", server_default_thumbnail)
                 await channel.send(embed = embed_msg)
     
-    # $searchCharEma
+    # $searchNameEma
     elif message.content.startswith(commandF(2)):
         emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
-
         if (len(find) != 2):
             await channel.send(embed = error_embed())
         for ema in emaList4_5["data"]:
@@ -125,6 +130,7 @@ async def on_message(message):
         except ValueError:
             await channel.send(embed = error_embed(error = "Wrong format, %s is not a number" % find[1]))
     
+    # $setup
     elif message.content.startswith(commandF(4, space = False)):
         pucs = loadPucs()
         ema = loadEmaList4_5()
@@ -142,7 +148,45 @@ async def on_message(message):
         ]
         embed_msg = field_embed("Setup", "", fields, pucs['data'][num_puc][1], server_default_thumbnail)
         await channel.send(embed=embed_msg)
-        
+
+    # $searchNamePuc
+    elif message.content.startswith(commandF(5)):
+        pucs = loadPucs()
+        msg = ''
+        find = message.content.split(" ")
+        if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
+        else: 
+            for puc in pucs['data']: 
+                if find in puc[1]: msg = msg + "\n" + puc[0] + " " + puc[1]
+            embed_msg = generic_embed("Pucs found", msg, "", server_default_thumbnail)
+        await channel.send(embed=embed_msg)
+
+    # $puc
+    elif message.content.startswith(commandF(6)):
+        pucs = loadPucs()
+        find = message.content.split(" ")
+        if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
+        else:
+            try:
+                num = int(find[2])
+                if(num>=len(pucs['data']) or num<0): embed_msg = error_embed(error="Number not in range")
+                else:
+                    puc = pucs['data'][num]
+                    field = [
+                        ["Viability:", puc[3] + "/"+ puc[4], False]
+                        ["Rank 1", puc[5], True],
+                        ["Rank 2", puc[6], True],
+                        ["Rank 3", puc[7], True],
+                        ["Rank 4", puc[8], True],
+                        ["Rank 5", puc[9], True],
+                        ["Rank 6", puc[10], True],
+                        ["Rank 7", puc[11], True],
+                        ["Score at 100", puc[]]
+                    ]
+                    embed_msg = field_embed(puc[1], puc[len(puc)-2], field, puc[len(puc)-1], server_default_thumbnail)
+            except ValueError:
+                embed_msg = error_embed(error="%s is not a number" % (find[2]))
+        await channel.send(embed=embed_msg)
 
 @client.event
 async def on_ready():
