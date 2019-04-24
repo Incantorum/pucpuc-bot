@@ -88,9 +88,7 @@ async def on_message(message):
                 find[0] = find[0].upper()
                 for arc in emaList:
                     for ema in emaList[arc]:
-                        print("{find[1]} - {find[1]}")
                         if((find[1]==ema[1] or find[1]=="ANY") and (find[0]==ema[2] or find[0].upper=="ANY")):
-                            print("added")
                             msg = msg + "\t%s - %s - %s\n" % (ema[0],ema[1],ema[2])
                 if(len(msg) > 2048):
                     embed_msg = error_embed(error="Result too big")

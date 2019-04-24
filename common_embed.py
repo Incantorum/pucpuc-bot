@@ -36,6 +36,5 @@ def field_embed(title, description, fields, image, thumbnail):
 
 def complete_embed(title, description, fields, image, thumbnail, footer):
     embed = field_embed(title, description, fields, image, thumbnail)
-
     embed.set_footer(text=footer)
     return embed
