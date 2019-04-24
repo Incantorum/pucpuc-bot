@@ -25,8 +25,8 @@ commands = [
     ["setup", "Generates a random setup"],
     ["searchNamePuc", "Search pucs by name\n\tExample: $searchPuc Araragi"],
     ["puc", "Display info about a puc by using his number\n\tExample: $puc 2"],
-    ["searchSkillEma", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma "Size Up"'],
-    ["searchSkillPuc", 'Search pucs by skill\t\nExample: $searchSkillPuc "Size Up";"Board Clear"']
+    ["searchSkillEma", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up'],
+    ["searchSkillPuc", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill']
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
@@ -103,10 +103,11 @@ async def on_message(message):
         find = message.content.split()
         if (len(find) != 2):
             await channel.send(embed = error_embed())
-        for ema in emaList4_5["data"]:
-            if( find[1] in ema[0] ):
-                msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
-        embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
+        else:
+            for ema in emaList4_5["data"]:
+                if( find[1] in ema[0] ):
+                    msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
+            embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
     
     # $ema
@@ -194,10 +195,11 @@ async def on_message(message):
         find = message.content.split()
         if (len(find) != 2):
             await channel.send(embed = error_embed())
-        for ema in emaList4_5["data"]:
-            if( find[1] in ema[2] ):
-                msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
-        embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
+        else:
+            for ema in emaList4_5["data"]:
+                if( find[1].replace("_", " ") in ema[2] ):
+                    msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
+            embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
     
     # $searchSkillPuc
