@@ -29,6 +29,6 @@ def field_embed(title, description, fields, image, thumbnail):
     )
     for field in fields:
         embed.add_field(name=field[0], value =field[1], inline=field[2])
-    embed.set_image(url = thumbnail)
+    embed.set_image(url = image)
     embed.set_thumbnail(url = thumbnail)
     return embed
