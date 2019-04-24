@@ -197,7 +197,7 @@ async def on_message(message):
             await channel.send(embed = error_embed())
         else:
             for ema in emaList4_5["data"]:
-                if( find[1].replace("_", " ").lower in ema[2].lower ):
+                if( find[1].replace("_", " ").lower() in ema[2].lower() ):
                     msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
             embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
@@ -210,7 +210,7 @@ async def on_message(message):
         if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
         else:
             for puc in pucs['data']:
-                if find[1].replace("_", " ").lower in puc[2].lower: 
+                if find[1].replace("_", " ").lower() in puc[2].lower(): 
                     msg = msg + "\n" + str(puc[0]) + " " + puc[1]
             embed_msg = generic_embed("Pucs found", msg, "", server_default_thumbnail)
         await channel.send(embed=embed_msg)
