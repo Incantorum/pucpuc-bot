@@ -168,7 +168,7 @@ async def on_message(message):
         if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
         else:
             try:
-                num = int(find[2])
+                num = int(find[1])
                 if(num>=len(pucs['data']) or num<0): embed_msg = error_embed(error="Number not in range")
                 else:
                     puc = pucs['data'][num]
