@@ -181,7 +181,7 @@ async def on_message(message):
                         ["Rank 5", puc[9], True],
                         ["Rank 6", puc[10], True],
                         ["Rank 7", puc[11], True],
-                        ["Score at 100", puc[]]
+                        ["Score at 100", puc[12], False]
                     ]
                     embed_msg = field_embed(puc[1], puc[len(puc)-2], field, puc[len(puc)-1], server_default_thumbnail)
             except ValueError:
