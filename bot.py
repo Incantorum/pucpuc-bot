@@ -157,8 +157,7 @@ async def on_message(message):
         if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
         else:
             for puc in pucs['data']:
-                await channel.send(puc)
-                if find in puc[1]: msg = msg + "\n" + puc[0] + " " + puc[1]
+                if find in puc[1]: msg = msg + "\n" + str(puc[0]) + " " + puc[1]
             embed_msg = generic_embed("Pucs found", msg, "", server_default_thumbnail)
         await channel.send(embed=embed_msg)
 
