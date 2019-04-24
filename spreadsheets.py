@@ -88,7 +88,7 @@ def updateDB4_5():
         print('No data found.')
     else:
         for i in range(0, l):
-            f.write('\t\t[ "%s", "%s", "%s", "%s"]' % (values[i][0], values[i][1], values[i][10], values[i][13]))
+            f.write('\t\t[ "%s", "%s", "%s", "%s", "%s"]' % (values[i][0], values[i][1], values[i][2], values[i][10], values[i][13]))
             if(i<l-1):
                 f.write(",")
             f.write("\n")
