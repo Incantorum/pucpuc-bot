@@ -2,6 +2,7 @@
 import discord
 import json
 import os
+import random
 from common_embed import *
 
 client = discord.Client()
@@ -20,7 +21,8 @@ commands = [
     ["help", "Info about a command.\n\tExample: $help ema"],
     ["searchEma", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"],
     ["searchCharEma", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
-    ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10"]
+    ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10"],
+    ["setup", "Generates a random setup"]
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
@@ -30,6 +32,7 @@ permited_ema_skill = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O
 
 emaList = dict()
 emaList4_5 = []
+pucs = []
 
 @client.event
 async def on_message(message):
@@ -39,7 +42,7 @@ async def on_message(message):
 
     channel = message.channel
 
-    if message.content.startswith('$commands'):
+    if message.content.startswith('$commands '):
         msg = ''
         for command in commands:
             msg = msg  + '$' + command[0] + "\n"
@@ -47,7 +50,7 @@ async def on_message(message):
         await channel.send(embed = embed_msg)
     
     # $help
-    if message.content.startswith("$" + commands[0][0]):
+    if message.content.startswith(commandF(0)):
         command_found = False
         cmd = message.content.split(" ")
         if (len(cmd) != 2):
@@ -64,7 +67,7 @@ async def on_message(message):
                 await channel.send(embed = error_embed(error = "Command not found"))
 
     # $searchEma
-    elif message.content.startswith("$" + commands[1][0]):
+    elif message.content.startswith(commandF(1)):
         emaList = loadEmaList1_3()
         msg = ""
         find = message.content.split(" ")
@@ -90,7 +93,7 @@ async def on_message(message):
                 await channel.send(embed = embed_msg)
     
     # $searchCharEma
-    elif message.content.startswith("$" + commands[2][0]):
+    elif message.content.startswith(commandF(2)):
         emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
@@ -104,7 +107,7 @@ async def on_message(message):
         await channel.send(embed = embed_msg)
     
     # $ema
-    elif message.content.startswith("$" + commands[3][0]):
+    elif message.content.startswith(commandF(3)):
         emaList4_5 = loadEmaList4_5()
         msg = ""
         find = message.content.split()
@@ -121,6 +124,25 @@ async def on_message(message):
                 await channel.send(error_embed(error="Not in range"))
         except ValueError:
             await channel.send(embed = error_embed(error = "Wrong format, %s is not a number" % find[1]))
+    
+    elif message.content.startswith(commandF(4)):
+        pucs = loadPucs()
+        ema = loadEmaList4_5()
+        num_puc = random.randint(0,len(pucs['data']))
+        num_ema1 = random.randint(0,len(ema['data']))
+        while(True):
+            num_ema2 = random.randint(0,len(ema['data']))
+            if(num_ema2 != num_ema1):
+                break
+        msg = pucs['data'][num_puc][0]
+        fields = [
+            ["Puc", pucs['data'][num_puc][0], False],
+            ["Ema 1", ema['data'][num_ema1][0], True],
+            ["Ema 2", ema['data'][num_ema2][0], True]
+        ]
+        embed_msg = field_embed("Setup", "", fields, pucs['data'][num_puc][1], server_default_thumbnail)
+        await channel.send(embed=embed_msg)
+        
 
 @client.event
 async def on_ready():
@@ -143,5 +165,13 @@ def loadEmaList1_3():
     for ema in jfile["data"]:
         db[ema[4]].append(ema)
     return db
+
+def loadPucs():
+    f = open("puc.json")
+    jfile = json.load(f)
+    return jfile
+
+def commandF(num):
+    return "$" + commands[num][0] + " "
 
 client.run(os.getenv('TOKEN'))

@@ -24,6 +24,8 @@ info = [
 
 ema4_5 = "'4-5 Star Ema Skills'!B2:O87"
 
+puc = "'Puc Skills'!B2:R72"
+
 def updateDB1_3():
     store = file.Storage('token.json')
     creds = store.get()
@@ -87,6 +89,40 @@ def updateDB4_5():
     else:
         for i in range(0, l):
             f.write('\t\t[ "%s", "%s", "%s", "%s"]' % (values[i][0], values[i][1], values[i][10], values[i][13]))
+            if(i<l-1):
+                f.write(",")
+            f.write("\n")
+
+    f.write("\t]\n")
+    f.write("}")
+    f.close()
+
+def updatePuc():
+    store = file.Storage('token.json')
+    creds = store.get()
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+        creds = tools.run_flow(flow, store)
+    service = build('sheets', 'v4', http=creds.authorize(Http()))
+
+    # Call the Sheets API
+    sheet = service.spreadsheets()
+
+    f = open("puc.json", "w")
+
+    f.write("{\n")
+    f.write('\t"data" : [\n')
+
+    result = sheet.values().get(spreadsheetId=spreadsheet,
+                                range=puc).execute()
+    values = result.get('values', [])
+    l = len(values)
+
+    if not values:
+        print('No data found.')
+    else:
+        for i in range(0, l):
+            f.write('\t\t[ "%s", "%s"]' % (values[i][0], values[i][len(values[i])-1]))            
             if(i<l-1):
                 f.write(",")
             f.write("\n")
