@@ -152,12 +152,13 @@ async def on_message(message):
     # $searchNamePuc
     elif message.content.startswith(commandF(5)):
         pucs = loadPucs()
-        msg = ''
+        msg = ""
         find = message.content.split(" ")
         if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
         else:
             for puc in pucs['data']:
-                if find in puc[1]: msg = msg + "\n" + str(puc[0]) + " " + puc[1]
+                if find[1] in puc[1]: 
+                    msg = msg + "\n" + str(puc[0]) + " " + puc[1]
             embed_msg = generic_embed("Pucs found", msg, "", server_default_thumbnail)
         await channel.send(embed=embed_msg)
 
@@ -168,7 +169,7 @@ async def on_message(message):
         if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
         else:
             try:
-                num = int(find[1])
+                num = int(find[1]) - 1
                 if(num>=len(pucs['data']) or num<0): embed_msg = error_embed(error="Number not in range")
                 else:
                     puc = pucs['data'][num]
