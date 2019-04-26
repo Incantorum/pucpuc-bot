@@ -64,7 +64,7 @@ async def on_message(message):
         else:
             cmd = cmd[1]
             for i in range (0, len(commands)):
-                if (cmd == commands[i][0]):
+                if (cmd == commands[i][0] and cmd != "help"):
                     msg = commands[i][1]
                     command_found = True
             if command_found == True:
