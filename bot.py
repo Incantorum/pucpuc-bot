@@ -141,7 +141,7 @@ async def on_message(message):
                 break
         msg = pucs['data'][num_puc][0]
         fields = [
-            ["Puc", pucs['data'][num_puc][0], False],
+            ["Puc", pucs['data'][num_puc][1], False],
             ["Ema 1", ema['data'][num_ema1][0], True],
             ["Ema 2", ema['data'][num_ema2][0], True]
         ]
