@@ -51,7 +51,6 @@ async def on_message(message):
     if message.content.startswith('$commands'):
         msg = ''
         for command in commands:
-            print(len(command))
             msg = msg  + '$' + command[0]
             if (command[2] != ""): msg = msg + " - " + command[2]
             msg = msg + "\n"
