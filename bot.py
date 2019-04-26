@@ -20,7 +20,7 @@ info = [
 commands = [
     ["help", "Info about a command.\n\tExample: $help ema"],
     ["se", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"],
-    ["sce", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
+    ["sne", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
     ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10"],
     ["setup", "Generates a random setup"],
     ["snp", "Search pucs by name\n\tExample: $searchPuc Araragi"],
