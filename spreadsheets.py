@@ -88,7 +88,9 @@ def updateDB4_5():
         print('No data found.')
     else:
         for i in range(0, l):
-            f.write('\t\t[ "%s", "%s", "%s", "%s", "%s"]' % (values[i][0], values[i][1], values[i][2], values[i][10], values[i][13]))
+            skill = values[i][2].split("\n")
+            skill = ", ".join(skill)
+            f.write('\t\t[ "%s", "%s", "%s", "%s", "%s"]' % (values[i][0], values[i][1], skill, values[i][10], values[i][13]))
             if(i<l-1):
                 f.write(",")
             f.write("\n")
@@ -123,7 +125,7 @@ def updatePuc():
     else:
         for i in range(0, l):
             skill = values[i][1].split("\n")
-            skill = " ".join(skill)
+            skill = ", ".join(skill)
             f.write('\t\t[ ')
             f.write('%d, ' % (i+1))
             for j in range (0, len(values[i])):

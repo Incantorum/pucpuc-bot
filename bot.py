@@ -18,15 +18,15 @@ info = [
 ]
 
 commands = [
-    ["help", "Info about a command.\n\tExample: $help ema"],
-    ["searchEma", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"],
-    ["searchNameEma", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
-    ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10"],
-    ["setup", "Generates a random setup"],
-    ["searchNamePuc", "Search pucs by name\n\tExample: $searchPuc Araragi"],
-    ["puc", "Display info about a puc by using his number\n\tExample: $puc 2"],
-    ["searchSkillEma", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma "Size Up"'],
-    ["searchSkillPuc", 'Search pucs by skill\t\nExample: $searchSkillPuc "Size Up"']
+    ["help", "Info about a command.\n\tExample: $help ema", ""],
+    ["se", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"], "Search 1-3 Ema",
+    ["sne", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi", "Search 4-5 ema"],
+    ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10", ""],
+    ["setup", "Generates a random setup", ""],
+    ["snp", "Search pucs by name\n\tExample: $searchPuc Araragi", "Search Puc"],
+    ["puc", "Display info about a puc by using his number\n\tExample: $puc 2", ""],
+    ["sse", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up', "Search Ema Skill"],
+    ["ssp", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill', "Search Puc Skill"]
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
@@ -51,20 +51,23 @@ async def on_message(message):
     if message.content.startswith('$commands'):
         msg = ''
         for command in commands:
-            msg = msg  + '$' + command[0] + "\n"
+            msg = msg  + '$' + command[0]
+            if (command[2] != ""): msg = msg + " - " + command[2]
+            msg = msg + "\n"
         embed_msg = generic_embed("Commands", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
     
     # $help
-    if message.content.startswith(commandF(0)):
+    if message.content.startswith(commandF(0, space=False)):
         command_found = False
         cmd = message.content.split(" ")
         if (len(cmd) != 2):
-            await channel.send(embed = error_embed())
+            if len(cmd) == 1: await channel.send(embed = generic_embed("Help", "Use $commands to see all the commands and `$help command` to see its description", "", server_default_thumbnail))
+            else: await channel.send(embed = error_embed())
         else:
             cmd = cmd[1]
             for i in range (0, len(commands)):
-                if (cmd == commands[i][0]):
+                if (cmd == commands[i][0] and cmd != "help"):
                     msg = commands[i][1]
                     command_found = True
             if command_found == True:
@@ -103,10 +106,11 @@ async def on_message(message):
         find = message.content.split()
         if (len(find) != 2):
             await channel.send(embed = error_embed())
-        for ema in emaList4_5["data"]:
-            if( find[1] in ema[0] ):
-                msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
-        embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
+        else:
+            for ema in emaList4_5["data"]:
+                if( find[1] in ema[0] ):
+                    msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
+            embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
     
     # $ema
@@ -140,11 +144,11 @@ async def on_message(message):
                 break
         msg = pucs['data'][num_puc][0]
         fields = [
-            ["Puc", pucs['data'][num_puc][0], False],
+            ["Puc", pucs['data'][num_puc][1], False],
             ["Ema 1", ema['data'][num_ema1][0], True],
             ["Ema 2", ema['data'][num_ema2][0], True]
         ]
-        embed_msg = field_embed("Setup", "", fields, pucs['data'][num_puc][1], server_default_thumbnail)
+        embed_msg = field_embed("Setup", "", fields, pucs['data'][num_puc][17], server_default_thumbnail)
         await channel.send(embed=embed_msg)
 
     # $searchNamePuc
@@ -186,6 +190,34 @@ async def on_message(message):
             except ValueError:
                 embed_msg = error_embed(error="%s is not a number" % (find[2]))
         await channel.send(embed=embed_msg)
+    
+    # $searchSkillEma
+    elif message.content.startswith(commandF(7)):
+        emaList4_5 = loadEmaList4_5()
+        msg = ""
+        find = message.content.split()
+        if (len(find) != 2):
+            await channel.send(embed = error_embed())
+        else:
+            for ema in emaList4_5["data"]:
+                if( find[1].replace("_", " ").lower() in ema[2].lower() ):
+                    msg = msg + "\t%s - %s\n" % (ema[0], ema[2])
+            embed_msg = generic_embed("Ema found", msg, "", server_default_thumbnail)
+        await channel.send(embed = embed_msg)
+    
+    # $searchSkillPuc
+    elif message.content.startswith(commandF(8)):
+        pucs = loadPucs()
+        msg = ""
+        find = message.content.split(" ")
+        if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
+        else:
+            for puc in pucs['data']:
+                if find[1].replace("_", " ").lower() in puc[2].lower(): 
+                    msg = msg + "\n" + str(puc[0]) + " " + puc[1]
+            embed_msg = generic_embed("Pucs found", msg, "", server_default_thumbnail)
+        await channel.send(embed=embed_msg)
+
 
 @client.event
 async def on_ready():
@@ -218,4 +250,5 @@ def commandF(num, space=True):
     if space == True : return "$" + commands[num][0] + " "
     else : return "$" + commands[num][0]
 
-client.run(os.getenv('TOKEN'))
+#client.run(os.getenv('TOKEN'))
+client.run("NTIwNjQ3OTI2MjA1MzgyNjY2.XLtzkA.vQ88_HoWqXWrOKHT1QyMyg_UybI")
