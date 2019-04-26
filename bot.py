@@ -18,15 +18,15 @@ info = [
 ]
 
 commands = [
-    ["help", "Info about a command.\n\tExample: $help ema"],
-    ["se", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"],
-    ["sne", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
-    ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10"],
-    ["setup", "Generates a random setup"],
-    ["snp", "Search pucs by name\n\tExample: $searchPuc Araragi"],
-    ["puc", "Display info about a puc by using his number\n\tExample: $puc 2"],
-    ["sse", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up'],
-    ["ssp", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill']
+    ["help", "Info about a command.\n\tExample: $help ema", ""],
+    ["se", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"], "Search 1-3 Ema",
+    ["sne", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi", "Search 4-5 ema"],
+    ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10", ""],
+    ["setup", "Generates a random setup", ""],
+    ["snp", "Search pucs by name\n\tExample: $searchPuc Araragi", "Search Puc"],
+    ["puc", "Display info about a puc by using his number\n\tExample: $puc 2", ""],
+    ["sse", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up', "Search Ema Skill"],
+    ["ssp", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill', "Search Puc Skill"]
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
@@ -51,16 +51,19 @@ async def on_message(message):
     if message.content.startswith('$commands'):
         msg = ''
         for command in commands:
-            msg = msg  + '$' + command[0] + "\n"
+            msg = msg  + '$' + command[0]
+            if (command[2] != ""): msg = msg + " - " + command[2]
+            msg = msg + "\n"
         embed_msg = generic_embed("Commands", msg, "", server_default_thumbnail)
         await channel.send(embed = embed_msg)
     
     # $help
-    if message.content.startswith(commandF(0)):
+    if message.content.startswith(commandF(0, space=False)):
         command_found = False
         cmd = message.content.split(" ")
         if (len(cmd) != 2):
-            await channel.send(embed = error_embed())
+            if len(cmd) == 1: await channel.send(embed = generic_embed("Help", "Use $commands to see all the commands and `$help command` to see its description", "", server_default_thumbnail))
+            else: await channel.send(embed = error_embed())
         else:
             cmd = cmd[1]
             for i in range (0, len(commands)):
