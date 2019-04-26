@@ -19,14 +19,14 @@ info = [
 
 commands = [
     ["help", "Info about a command.\n\tExample: $help ema"],
-    ["searchEma", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"],
-    ["searchNameEma", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
+    ["se", "Search through the 1-3 ema list by star and skill, you can also use 'any' as a parameter.\n\tExample: $searchEma 1;J"],
+    ["sce", "Search through the 4-5 ema list by name \nExample: $searchCharEma Araragi"],
     ["ema", "Get the description of a 4-5 ema by using its number on the doc (You can use searchCharEma to know that number)\nExample: $ema 10"],
     ["setup", "Generates a random setup"],
-    ["searchNamePuc", "Search pucs by name\n\tExample: $searchPuc Araragi"],
+    ["snp", "Search pucs by name\n\tExample: $searchPuc Araragi"],
     ["puc", "Display info about a puc by using his number\n\tExample: $puc 2"],
-    ["searchSkillEma", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up'],
-    ["searchSkillPuc", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill']
+    ["sse", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up'],
+    ["ssp", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill']
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
