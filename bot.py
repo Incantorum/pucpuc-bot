@@ -145,7 +145,7 @@ async def on_message(message):
             ["Ema 1", ema['data'][num_ema1][0], True],
             ["Ema 2", ema['data'][num_ema2][0], True]
         ]
-        embed_msg = field_embed("Setup", "", fields, pucs['data'][num_puc][1], server_default_thumbnail)
+        embed_msg = field_embed("Setup", "", fields, pucs['data'][num_puc][17], server_default_thumbnail)
         await channel.send(embed=embed_msg)
 
     # $searchNamePuc
@@ -247,4 +247,5 @@ def commandF(num, space=True):
     if space == True : return "$" + commands[num][0] + " "
     else : return "$" + commands[num][0]
 
-client.run(os.getenv('TOKEN'))
+#client.run(os.getenv('TOKEN'))
+client.run("NTIwNjQ3OTI2MjA1MzgyNjY2.XLtzkA.vQ88_HoWqXWrOKHT1QyMyg_UybI")
