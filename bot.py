@@ -26,7 +26,8 @@ commands = [
     ["snp", "Search pucs by name\n\tExample: $searchPuc Araragi", "Search Puc"],
     ["puc", "Display info about a puc by using his number\n\tExample: $puc 2", ""],
     ["sse", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up', "Search ema skill"],
-    ["ssp", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill', "Search puc skill"]
+    ["ssp", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill', "Search puc skill"],
+    ["skill", 'Shows the description of the skill with that letter\n\tExample: $skill A', ""]
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
@@ -218,6 +219,21 @@ async def on_message(message):
             embed_msg = generic_embed("Pucs found", msg, "", server_default_thumbnail)
         await channel.send(embed=embed_msg)
 
+    # $skill
+    elif message.content.startswith(commandF(9)):
+        skills = loadSkills()
+        find = message.content.split(" ")
+        if (len(find)!=2): embed_msg = error_embed(error="Wrong format")
+        else:
+            msg = ''
+            for skill in skills['data']:
+                if find[1].lower() == skill[0].lower(): 
+                   msg = skill[0] + " : " + skill[1]
+            if msg == '': 
+                embed_msg = error_embed(error="Skill not found")
+            else:
+                embed_msg = generic_embed("Skill description", msg, "", server_default_thumbnail)
+        await channel.send(embed=embed_msg)
 
 @client.event
 async def on_ready():
@@ -243,6 +259,11 @@ def loadEmaList1_3():
 
 def loadPucs():
     f = open("puc.json")
+    jfile = json.load(f)
+    return jfile
+
+def loadSkills():
+    f = open("skills.json")
     jfile = json.load(f)
     return jfile
 
