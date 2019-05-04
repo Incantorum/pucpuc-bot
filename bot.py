@@ -27,7 +27,8 @@ commands = [
     ["puc", "Display info about a puc by using his number\n\tExample: $puc 2", ""],
     ["sse", 'Search 4-5 ema by skill\t\nExample: $searchSkillEma Size_Up', "Search ema skill"],
     ["ssp", 'Search pucs by skill\t\nExample: $searchSkillPuc Board_skill', "Search puc skill"],
-    ["skill", 'Shows the description of the skill with that letter\n\tExample: $skill A', ""]
+    ["skill", 'Shows the description of the skill with that letter\n\tExample: $skill A', ""],
+    ["format", 'Formats weekly ranking data\n\tExample: $format Karen K07 200 110 50', ""]
 ]
 
 server_default_thumbnail = "https://cdn.discordapp.com/attachments/492461461113667605/568033372543385611/cha_block_madoka01_v01-CAB-c50120ac711700ee630d6512935a44fe-1479165618584560336.png"
@@ -235,6 +236,19 @@ async def on_message(message):
                 embed_msg = generic_embed("Skill description", msg, "", server_default_thumbnail)
         await channel.send(embed=embed_msg)
 
+    # $format
+    elif message.content.startswith(commandF(10)):
+        arguments = message.content.split(" ")
+        if (len(find)!=6): embed_msg = error_embed(error="Error - 5 arguments needed (Character, Group ID, 3rd, 10th, 100th)")
+        else:
+            field = [
+                ["3rd place:", arguments[3], False],
+                ["10th place:", arguments[4], False],
+                ["100th place:", arguments[5], False]
+            ]
+        embed_msg = field_embed(arguments[1] + " " + arguments[2], "", field, "", server_default_thumbnail)
+        await channel.send(embed=embed_msg)
+            
 @client.event
 async def on_ready():
     print('Logged in as')
