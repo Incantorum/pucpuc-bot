@@ -1,0 +1,32 @@
+{
+	"data" : [
+		[ "A", "When fever time starts, charges puc skill"],
+		[ "B", "When fever time starts, size up 1 random puc"],
+		[ "C", "Gives a high chance of leader puc being spawned"],
+		[ "D", "The size needed to pop a puc is lowered"],
+		[ "E", "The time it takes for a puc to pop is shortened"],
+		[ "F", "Grants bonus when popping size 28 and up pucs"],
+		[ "G", "Extends linking range for set period of time"],
+		[ "H", "Speeds up chain gatherings "],
+		[ "I", "Size up when completing a chain of 3+"],
+		[ "J", "Size up leader pucs and clears middle of board"],
+		[ "K", "Charges puc skill gauge"],
+		[ "L", "Clears a horizontal line of pucs"],
+		[ "M", "Clears a vertical line of pucs"],
+		[ "N", "Erases up to x pucs with a score multiplier"],
+		[ "O", "Creates leader pucs"],
+		[ "P", "A big puc appears"],
+		[ "Q", "Change center of the board to leader pucs"],
+		[ "R", "Randomly changes all the pucs"],
+		[ "S", "Any puc that cannot connect changes to leader"],
+		[ "T", "Size up up to x of the smallest pucs "],
+		[ "U", "Size up up to x leader pucs"],
+		[ "V", "Size up x random pucs"],
+		[ "W", "Size up 5 random pucs"],
+		[ "X", "Size up 4 random pucs"],
+		[ "Y", "Size up 3 random pucs"],
+		[ "Z", "Size up 2 random pucs"],
+		[ "AA", "Size up 1 random puc"],
+		[ "AB", "Change some pucs adjacent to a leader puc into the leader puc"]
+	]
+}
